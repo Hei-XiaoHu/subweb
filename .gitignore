@@ -25,3 +25,12 @@ pnpm-debug.log*
 
 # Claude Code configuration
 CLAUDE.md
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Config files (personal preferences)
+.browserslistrc
+.eslintrc.js
+.prettierrc.js
