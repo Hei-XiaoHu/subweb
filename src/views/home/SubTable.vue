@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-8 col-md-10">
                   <label class="form-label" for="remote">远程配置</label>
-                  <select class="form-select" id="remote" @change="selectRemoteConfig">
+                  <select class="form-select" id="remote" v-model="remoteConfig" @change="selectRemoteConfig">
                     <option v-for="option in remoteConfigOptions" :key="option" :value="option.value">
                       {{ option.text }}
                     </option>
@@ -161,7 +161,7 @@ export default {
       urls: [],
       api: window.config.apiUrl,
       target: 'clash',
-      remoteConfig: '',
+      remoteConfig: window.config.remoteConfigOptions.length > 0 ? window.config.remoteConfigOptions[0].value : '',
     };
   },
   methods: {

@@ -21,12 +21,28 @@ window.config = {
   // 远程配置地址,可以自行按照格式添加。
   remoteConfigOptions: [
     {
-      value: 'https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online.ini',
-      text: 'ACL4SSR Online',
+      value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full_AdblockPlus.ini',
+      text: '[推荐·少主特调]ACL4SSR_Online_Full_AdblockPlus',
     },
     {
-      value: 'https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full.ini',
-      text: 'ACL4SSR Online Full',
+      value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full.ini',
+      text: '[少主特调]ACL4SSR_Online_Full',
+    },
+    {
+      value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full_Google.ini',
+      text: '[少主特调]ACL4SSR_Online_Full_Google',
+    },
+    {
+      value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full_Netflix.ini',
+      text: '[少主特调]ACL4SSR_Online_Full_Netflix',
+    },
+    {
+      value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full_MultiMode.ini',
+      text: '[少主特调]ACL4SSR_Online_Full_MultiMode',
+    },
+    {
+      value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full_NoAuto.ini',
+      text: '[少主特调]ACL4SSR_Online_Full_NoAuto',
     },
   ],
 };
