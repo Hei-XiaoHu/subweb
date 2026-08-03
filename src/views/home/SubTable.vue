@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-5 col-md-6">
                   <label class="form-label" for="client">客户端</label>
-                  <select class="form-select" id="client" v-model="target" @change="selectTarget">
+                  <select class="form-select" id="client" v-model="target">
                     <option v-for="option in targetOptions" :key="option" :value="option.value">
                       {{ option.text }}
                     </option>
@@ -28,15 +28,14 @@
                   </select>
                 </div>
                 <div class="col-12 col-md-12" v-if="isShowManualApiUrl">
-                  <input class="form-control" placeholder="自定义后端 API 地址示例：https://sub.ops.ci" v-model="api" />
+                  <input class="form-control" placeholder="自定义后端 API 地址" v-model="api" />
                 </div>
                 <div class="col-8 col-md-10">
                   <label class="form-label" for="remote">远程配置</label>
-                  <select class="form-select" id="remote" v-model="remoteConfig" @change="selectRemoteConfig">
-                    <option v-for="option in remoteConfigOptions" :key="option" :value="option.value">
+                  <select class="form-select" id="remote" v-model="remoteConfigSelect" @change="selectRemoteConfig">
+                    <option v-for="option in remoteConfigOptions" :key="option.value" :value="option.value">
                       {{ option.text }}
                     </option>
-                    <option value="">默认配置</option>
                     <option value="manual">自定义远程配置地址</option>
                   </select>
                 </div>
@@ -45,7 +44,7 @@
                   <button type="button" class="btn btn-warning" @click="showMoreConfig">参数</button>
                 </div>
                 <div class="col-12 col-md-12" v-if="isShowRemoteConfig">
-                  <input class="form-control" placeholder="自定义远程配置地址：" v-model="remoteConfig" />
+                  <input class="form-control" placeholder="自定义远程配置地址" v-model="remoteConfig" />
                 </div>
                 <div class="col-12 col-md-12" v-if="isShowMoreConfig">
                   <label class="form-label" for="add-user-email">可选参数</label>
@@ -91,10 +90,11 @@
                 <div class="col-12 col-md-2">
                   <button type="button" class="btn btn-success" @click="getSubUrl()">转换</button>
                 </div>
-                <div class="col-12 col-md-10">
+                <!-- 短链功能：仅在 config.js 中配置了 shortUrl 时显示 -->
+                <div class="col-12 col-md-10" v-if="shortUrl">
                   <input class="form-control" placeholder="点击获取短链" v-model.trim="result.shortUrl" />
                 </div>
-                <div class="col-12 col-md-2">
+                <div class="col-12 col-md-2" v-if="shortUrl">
                   <button type="button" class="btn btn-primary" @click="getShortUrl()">短链</button>
                 </div>
               </div>
@@ -130,23 +130,9 @@ export default {
   data() {
     return {
       placeholder: '多订阅链接或节点请确保每行一条\n支持手动使用"|"分割多链接或节点',
-      targetOptions: [
-        { value: 'clash', text: 'Clash' },
-        { value: 'clashr', text: 'ClashR' },
-        { value: 'v2ray', text: 'V2Ray' },
-        { value: 'quan', text: 'Quantumult' },
-        { value: 'quanx', text: 'Quantumult X' },
-        { value: 'surge&ver=2', text: 'SurgeV2' },
-        { value: 'surge&ver=3', text: 'SurgeV3' },
-        { value: 'surge&ver=4', text: 'SurgeV4' },
-        { value: 'surfboard', text: 'Surfboard' },
-        { value: 'ss', text: 'SS (SIP002)' },
-        { value: 'sssub', text: 'SS Android' },
-        { value: 'ssd', text: 'SSD' },
-        { value: 'ssr', text: 'SSR' },
-        { value: 'loon', text: 'Loon' },
-        { value: 'singbox', text: 'Sing-box' },
-      ],
+      // 客户端列表：默认仅 Clash。
+      // 如需更多客户端，请在 conf/config.js 中配置 targetOptions（详见 config.js 注释）。
+      targetOptions: window.config.targetOptions || [{ value: 'clash', text: 'Clash' }],
       apiUrl: window.config.apiUrl,
       shortUrl: window.config.shortUrl,
       remoteConfigOptions: window.config.remoteConfigOptions,
@@ -161,8 +147,17 @@ export default {
       urls: [],
       api: window.config.apiUrl,
       target: 'clash',
+      // remoteConfigSelect 只负责下拉框选中项，remoteConfig 才是实际使用的远程配置地址，
+      // 两者分离以修复选择"自定义远程配置地址"后下拉框显示异常的 bug。
+      remoteConfigSelect: window.config.remoteConfigOptions.length > 0 ? window.config.remoteConfigOptions[0].value : 'manual',
       remoteConfig: window.config.remoteConfigOptions.length > 0 ? window.config.remoteConfigOptions[0].value : '',
     };
+  },
+  created() {
+    // 未配置任何远程配置时，默认展示自定义输入框
+    if (window.config.remoteConfigOptions.length === 0) {
+      this.isShowRemoteConfig = true;
+    }
   },
   methods: {
     showMoreConfig() {
@@ -222,14 +217,7 @@ export default {
         // 自动删除末尾的斜杠
         this.api = this.api.slice(0, -1);
       }
-      this.result.subUrl = getSubLink(
-        this.urls,
-        this.api,
-        this.target,
-        this.remoteConfig,
-        this.isShowMoreConfig,
-        this.moreConfig
-      );
+      this.result.subUrl = getSubLink(this.urls, this.api, this.target, this.remoteConfig, this.moreConfig);
       return true;
     },
     getSubUrl() {

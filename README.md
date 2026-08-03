@@ -1,61 +1,53 @@
 # subweb
-## 简介
-subweb 是基于 subconverter 订阅转换的前端项目,方便用户快速生成各平台的订阅链接.
 
-> *subweb 是我个人入门 vuejs 学习时简单做的一个案例,使用还算方便,开源出来,欢迎各路大佬贡献维护.*
+基于 [subconverter](https://github.com/tindy2013/subconverter) 的订阅转换前端，Fork 自 [stilleshan/subweb](https://github.com/stilleshan/subweb) 并做了如下改进：
 
-*GitHub [stilleshan/subweb](https://github.com/stilleshan/subweb)  
-Docker [stilleshan/subweb](https://hub.docker.com/r/stilleshan/subweb)*
-> *docker image support for X86 and ARM*
+- 客户端默认仅保留 Clash，可通过配置文件自行扩展
+- 参数（Emoji / UDP）默认开启，无需手动展开参数面板
+- 修复"自定义远程配置地址"下拉框显示异常的 bug
+- 未配置短链服务时自动隐藏短链功能
+- 精简 Docker 镜像（仅包含构建产物），启动更快
+- 仅保留 docker-compose 部署方式
 
-## 示例
-[https://sub.ops.ci](https://sub.ops.ci)  
-[https://subweb-demo.vercel.app/](https://subweb-demo.vercel.app/)  
-*`前后端示例,可以直接使用.`*
+*GitHub [Hei-XiaoHu/subweb](https://github.com/Hei-XiaoHu/subweb)*
+*Docker [heixiaohu/subweb](https://hub.docker.com/r/heixiaohu/subweb)*
 
 ## 部署
-### docker 本地版
-*适用于本机快速部署使用*
+
 ```shell
-docker run -d --name subweb --restart always \
-  -p 18080:80 \
-  stilleshan/subweb
+git clone https://github.com/Hei-XiaoHu/subweb.git
+cd subweb
+docker compose up -d
 ```
 
 访问 `http://127.0.0.1:18080`
 
-### docker 自定义版 + 短链接版
-自定义版可以挂载配置文件来修改`API 地址`,`短链接地址`,`站点名称`,`导航链接`.  
-参考以下命令,修改本地挂载路径,启动容器后会生成`config.js`配置文件,更改后刷新生效.
+首次启动会在 `./conf/` 下自动生成默认 `config.js`，修改后刷新页面即生效（无需重启容器）。
+
+> 默认端口仅绑定 `127.0.0.1`，推荐使用 nginx 反向代理对外提供服务。
+
+## 配置说明
+
+`conf/config.js`：
+
+| 配置项 | 说明 |
+| --- | --- |
+| `siteName` | 网站标题 |
+| `apiUrl` | 后端 subconverter 服务地址 |
+| `shortUrl` | 短链服务地址，留空则页面不显示短链功能 |
+| `targetOptions` | 客户端列表，默认仅 Clash，取消注释可启用更多客户端 |
+| `menuItem` | 导航菜单 |
+| `remoteConfigOptions` | 远程配置下拉列表 |
+
+## 本地开发
 
 ```shell
-docker run -d --name subweb --restart always \
-  -p 18080:80 \
-  -v /PATH/subweb/public/conf:/usr/share/nginx/html/conf \
-  stilleshan/subweb
+npm install
+npm run serve
 ```
-
-同时也可以不挂载目录,直接通过`-e`环境变量来修改`API 地址`,`短链接地址`和`站点名称`,但是无法修改`导航链接`.  
-`注意:以下域名请严格填写 http 或 https 协议,结尾不要 / 斜杠符号.`
-```shell
-docker run -d --name subweb --restart always \
-  -p 18080:80 \
-  -e SITE_NAME=subweb \
-  -e API_URL=https://sub.ops.ci \
-  -e SHORT_URL=https://s.ops.ci \
-  stilleshan/subweb
-```
-
-访问 `http://127.0.0.1:18080`  
-> *推荐使用 nginx 反向代理部署*
-
-### Vercel 部署
-Vercel 部署请切换至 vercel 分支查看。
-
-### subweb + subconverter + myurls 合并进阶版
-详情查看 [stilleshan/sub](https://github.com/stilleshan/dockerfiles/tree/main/sub)
 
 ## 链接
-- [stilleshan/sub](https://github.com/stilleshan/dockerfiles/tree/main/sub)
-- [stilleshan/subweb](https://github.com/stilleshan/subweb)
-- [stilleshan/subconverter](https://github.com/stilleshan/subconverter)
+
+- [Hei-XiaoHu/subweb](https://github.com/Hei-XiaoHu/subweb)
+- [Hei-XiaoHu/ACL4SSR](https://github.com/Hei-XiaoHu/ACL4SSR)
+- [tindy2013/subconverter](https://github.com/tindy2013/subconverter)
