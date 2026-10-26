@@ -73,6 +73,10 @@
                         <label class="form-check-label" for="scv">关闭证书检查</label>
                       </div>
                       <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="hy2scv" v-model="moreConfig.hy2scv" />
+                        <label class="form-check-label" for="hy2scv">HY2关闭证书检查</label>
+                      </div>
+                      <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="nodelist" v-model="moreConfig.list" />
                         <label class="form-check-label" for="nodelist">Node List</label>
                       </div>
@@ -121,6 +125,7 @@ export default {
       udp: true,
       sort: false,
       scv: false,
+      hy2scv: true,
       list: false,
     };
     return {
