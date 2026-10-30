@@ -38,14 +38,15 @@ window.config = {
     },
   ],
   // 远程配置地址,可以自行按照格式添加。留空数组则仅显示"自定义远程配置地址"。
+  // 第一项是默认项：用户选"自定义远程配置地址"却留空时也会回退到它。
   remoteConfigOptions: [
     {
       value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full_AdblockPlus.ini',
-      text: '[推荐·Mihomo内核]Full_AdblockPlus',
+      text: '[mihomo 内核·电脑/安卓]Full_AdblockPlus',
     },
     {
       value: 'https://raw.githubusercontent.com/Hei-XiaoHu/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Full_AdblockPlus_Stash.ini',
-      text: '[推荐·Premium内核]Full_AdblockPlus_Stash',
+      text: '[Stash·iOS 3.6+]Full_AdblockPlus_Stash',
     },
   ],
 };

@@ -73,10 +73,6 @@
                         <label class="form-check-label" for="scv">关闭证书检查</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="hy2scv" v-model="moreConfig.hy2scv" />
-                        <label class="form-check-label" for="hy2scv">HY2关闭证书检查</label>
-                      </div>
-                      <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="nodelist" v-model="moreConfig.list" />
                         <label class="form-check-label" for="nodelist">Node List</label>
                       </div>
@@ -125,7 +121,6 @@ export default {
       udp: true,
       sort: false,
       scv: false,
-      hy2scv: true,
       list: false,
     };
     return {
@@ -214,9 +209,10 @@ export default {
         this.$showDialog('warning', '注意', '请输入自定义后端 API 地址，或选择默认后端服务。');
         return false;
       }
-      if (this.remoteConfig == '' && this.isShowRemoteConfig) {
-        this.$showDialog('warning', '注意', '请输入远程配置地址，或选择默认配置。');
-        return false;
+      if (this.remoteConfig == '' && this.remoteConfigOptions.length > 0) {
+        // 自定义远程配置留空：回退到列表第一项（mihomo 配置），不交给后端默认模板
+        this.remoteConfig = this.remoteConfigOptions[0].value;
+        showNotification('远程配置留空，已使用 ' + this.remoteConfigOptions[0].text, '提示', 'warning');
       }
       if (this.api.endsWith('/')) {
         // 自动删除末尾的斜杠
